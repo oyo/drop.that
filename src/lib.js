@@ -127,6 +127,8 @@ export const dropIn = async (opts = {}) =>
 
 		const config = { ...optionsIn, ...opts }
 
+		let fileInput, inputarea, startButton
+
 		const debounce = (func, timeout = 250) => {
 			let timer
 			return (...args) => {
@@ -158,14 +160,14 @@ export const dropIn = async (opts = {}) =>
 			<button id="start" class="action" ${config.valid('') ? '' : 'disabled'}>${config.startButtonText}</button>
 		</span>
 	</div>`
-			const inputarea = document.getElementById('inputarea')
+			inputarea = document.getElementById('inputarea')
 			inputarea.focus()
 			inputarea.addEventListener('input', (evt) => processText(evt.target.value))
-			const fileInput = document.querySelector('input[type=file]')
+		  fileInput = document.querySelector('input[type=file]')
 			fileInput.addEventListener('change', (evt) => readFile(evt.target.files))
 			document.getElementById('paste').addEventListener('click', () => paste())
 			document.getElementById('clear').addEventListener('click', () => setInput(''))
-			const startButton = document.getElementById('start')
+			startButton = document.getElementById('start')
 			startButton.addEventListener('click', () => {
 				config.parent.removeChild(overlay)
 				resolve(inputarea.value)

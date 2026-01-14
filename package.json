@@ -1,6 +1,6 @@
 {
   "name": "drop.that",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Generic drop/paste input and download/copy output component for web applications.",
   "author": "Martin Rohrmeier <roryphant@gmail.com> (oyo)",
   "license": "MIT",
@@ -11,6 +11,13 @@
     "type": "git",
     "url": "git+https://github.com/oyo/drop.that.git"
   },
+  "keywords": [
+    "drag",
+    "drop",
+    "paste",
+    "download",
+    "zero-dependency"
+  ],
   "scripts": {
     "build": "mkdir -p dist && cp src/lib* dist",
     "clear": "rm -rf dist"
