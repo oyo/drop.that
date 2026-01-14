@@ -1,0 +1,6 @@
+<body>
+  <script type="module">
+    import { dropIn, dropOut } from './lib.js'
+    await dropOut((await dropIn()).split(' ').join('\n'))
+  </script>
+</body>

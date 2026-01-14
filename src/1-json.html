@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>drop.that</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: monospace;
+    }
+  </style>
+</head>
+
+<body>
+  Drag an unformatted JSON file into the window.
+  <script type="module">
+    import { dropIn, dropOut, valid } from './lib.js'
+
+    const input = await dropIn({
+      autoStart: true,
+      showUI: false,
+      valid: valid.isJSON,
+    })
+
+    const output = JSON.stringify(
+      JSON.parse(input), null, 2
+    )
+
+    await dropOut(
+      output,
+      {
+        autoDownload: true,
+        downloadFileMimeType: 'application/json'
+      }
+    )
+
+    document.body.innerText = 'Your formatted JSON file has been downloaded.'
+  </script>
+</body>
+
+</html>

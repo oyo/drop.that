@@ -1,0 +1,6 @@
+.github/
+src/
+node_modules/
+yarn.lock
+README.md
+.DS_Store

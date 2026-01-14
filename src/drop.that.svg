@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+<defs>
+<style>.arrow{fill:#cc8822;stroke:black;}.file{fill:white;stroke:black;}.screen{fill:gray;stroke:black;}</style>
+<path id="file" class="file" d="M16,0l-16,0l0,35l25,0l0,-26l-9,-9l0,9l9,0M5,5l7,0M5,10l4,0M5,15l12,0M5,20l15,0M5,25l9,0M5,30l11,0" />
+<path id="screen" class="screen" d="M0,0l70,0l0,50l-70,0z" />
+<path id="arrow" class="arrow" d="M25,0l-15,10l0,-5l-15,0l0-10l15,0,l0,-5z" />
+<text id="gear" class="gear">⚙</text>
+</defs><g>
+<use href="#file" transform="translate(10,22)"/>
+<use href="#screen" transform="translate(65,15)"/>
+<use href="#gear" transform="translate(83,46),scale(2,2)"/>
+<use href="#gear" transform="translate(100,51),scale(1.5,1.5)"/>
+<use href="#arrow" transform="translate(45,40)"/>
+<use href="#file" transform="translate(165,22)"/>
+<use href="#arrow" transform="translate(150,30),rotate(90)"/>
+</g></svg>
