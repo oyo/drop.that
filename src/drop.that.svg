@@ -4,7 +4,7 @@
 .arrow{fill:#cc8822;stroke:black;}
 .file{fill:white;stroke:black;}
 .screen{fill:gray;stroke:black;}
-.src{font-family:monospace;}
+.src{stroke:black;stroke-width:0.5px;fill:white;font-family:monospace;}
 </style>
 <path id="file" class="file" d="M16,0l-16,0l0,35l25,0l0,-26l-9,-9l0,9l9,0M5,5l7,0M5,10l4,0M5,15l12,0M5,20l15,0M5,25l9,0M5,30l11,0" />
 <path id="screen" class="screen" d="M0,0l70,0l0,50l-70,0z" />

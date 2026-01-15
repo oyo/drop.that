@@ -41,12 +41,9 @@ jobs:
         id: npm_tag
         run: echo "current_version=$(npm pkg get version | tr -d '"')" >> $GITHUB_OUTPUT
 
-      - name: Output tags
-        run: echo GIT ${{ github.ref_name }} NPM ${{ steps.npm_tag.outputs.current_version }}
-
       - name: Check if git and npm tags match
         if: ${{ github.ref_name != steps.npm_tag.outputs.current_version }}
-        run: echo "version not matching" && exit 1
+        run: echo "GIT ${{ github.ref_name }} != NPM ${{ steps.npm_tag.outputs.current_version }}" && exit 1
 
       - name: Build Library
         run: yarn build
