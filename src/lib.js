@@ -99,7 +99,7 @@ export const valid = {
 
 const optionsIn = {
 	parent: document.body,
-	fetchDefault: '',
+	apiIn: '',
 	autoStart: false,
 	showUI: true,
 	valid: valid.isNotEmpty,
@@ -111,12 +111,16 @@ const optionsIn = {
 
 const optionsOut = {
 	parent: document.body,
+	apiMethod: 'POST',
+	apiOut: '',
+	apiOutMimeType: 'text/plain',
 	autoDownload: false,
 	autoCopy: false,
 	copyButtonText: 'copy',
 	downloadButtonText: 'download',
 	downloadFileName: 'output',
 	downloadFileMimeType: 'text/plain',
+	uploadButtonText: 'upload',
 	rawButtonText: 'raw',
 	previewButtonText: 'preview',
 }
@@ -175,7 +179,7 @@ export const dropIn = async (opts = {}) =>
 		}
 		overlay.appendChild(style)
 
-		config.fetchDefault && fetch(config.fetchDefault)
+		config.apiIn && fetch(config.apiIn)
 			.then(response => response.ok ? response.text() : '')
 			.then(data => setInput(data))
 
@@ -209,7 +213,11 @@ export const dropIn = async (opts = {}) =>
 			}
 
 			if (config.autoStart && isValid) {
-				config.parent.removeChild(overlay)
+				try {
+				  config.parent.removeChild(overlay)
+				} catch (_) {
+					// ignore
+				}
 				resolve(text)
 			}
 		}
@@ -272,6 +280,16 @@ export const dropOut = async (output, opts = {}) =>
 			}
 		}
 
+		const upload = async () => {
+			await fetch(config.apiOut, {
+		  	method: config.apiMethod,
+  			body: output,
+				headers: {
+    			'content-type': config.apiOutMimeType
+				}
+			})
+		}
+
 		if (config.autoDownload || config.autoCopy) {
 			config.autoCopy && copy()
 			config.autoDownload && download()
@@ -295,6 +313,7 @@ export const dropOut = async (output, opts = {}) =>
 	<span>
 		<button id="download" class="action">${config.downloadButtonText}</button>
 		<button id="copy" class="action">${config.copyButtonText}</button>
+		${config.apiOut && `<button id="upload" class="action">${config.uploadButtonText}</button>`}
 	</span>
 </div>`
 		overlay.appendChild(style)
@@ -324,8 +343,14 @@ export const dropOut = async (output, opts = {}) =>
 			download()
 			resolve(true)
 		})
-		downloadButton.addEventListener('click', () => {
+		const copyButton = document.getElementById('copy')
+		copyButton.addEventListener('click', () => {
 			copy()
+			resolve(true)
+		})
+		const uploadButton = document.getElementById('upload')
+		uploadButton.addEventListener('click', () => {
+			upload()
 			resolve(true)
 		})
 

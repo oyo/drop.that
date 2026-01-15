@@ -40,7 +40,7 @@
 <defs><style>
 .b{fill:none;stroke:#0000ff;stroke-width:4;}
 .n{fill:black;font-size:2px;font-family:sans-serif;dominant-baseline:middle;text-align:right;}
-.w{fill:#a0a0a0;font-size:2px;font-family:sans-serif;dominant-baseline:middle;}
+.w{fill:white;font-size:2px;font-family:sans-serif;dominant-baseline:middle;}
 </style></defs>
 <g>
 <path class="b" d="${count.map(([_, n], i) => `M 20 ${(i + 2) * 5} l ${n} 0`).join()
@@ -52,7 +52,7 @@ ${count.map(([w, n], i) =>
 </g></svg>`
 
     const input = await dropIn({
-      fetchDefault: 'wordcount.txt',
+      apiIn: 'wordcount.txt',
       startButtonText: 'wordcount'
     })
     const graph = createGraph(wordCount(input))

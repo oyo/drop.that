@@ -16,10 +16,11 @@
 </head>
 
 <body>
-  Drag an unformatted JSON file into the window.
   <script type="module">
     import { dropIn, dropOut, valid } from './lib.js'
 
+    document.body.innerText = 'Drag an unformatted JSON file into the window.'
+    
     const input = await dropIn({
       autoStart: true,
       showUI: false,

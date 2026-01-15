@@ -4,7 +4,9 @@ A drop input and download output component for web applications.
 Typically to process an input file provided by the user, like in
 online file conversion tools. This is useful in pure frontend
 web applications, where you can't or don't want to deal with any
-backend API or database storage.
+backend API or database storage. Nonetheless there is a basic
+support for REST services if you have them running or CORS is
+enabled.
 
 ![Process Flow](src/drop.that.svg "Drop Process Download")
 
@@ -24,14 +26,12 @@ Here is a simple example. Drop, upload, paste or enter some text.
 It will split the words into lines.
 
 ``` html
-  <body>
-    <script type="module">
-      import { dropIn, dropOut } from 'https://oyo.github.io/drop.that/lib.js'
-      const input = await dropIn()
-      const output = input.split(' ').join('\n')
-      await dropOut(output)
-    </script>
-  </body>
+  <script type="module">
+    import { dropIn, dropOut } from 'https://oyo.github.io/drop.that/lib.js'
+    const input = await dropIn()
+    const output = input.split(' ').join('\n')
+    await dropOut(output)
+  </script>
 ```
 
 See https://oyo.github.io/drop.that/0-simple.html
