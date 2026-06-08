@@ -1,0 +1,23 @@
+<script type="module">
+  import { dropIn, dropOut, valid } from './lib.js'
+
+  const image = await dropIn({
+    valid: valid.isImageBitmap,
+  })
+
+  const output = (image) => {
+    const can = document.createElement('canvas')
+    const ctx = can.getContext('2d')
+    can.width = img.width
+    can.height = img.height
+    ctx.filter = 'grayscale(1)'
+    ctx.drawImage(img, 0, 0, img.width, img.height)
+  }
+
+  await dropOut(
+    output,
+    {
+      downloadFileMimeType: 'image/png'
+    }
+  )
+</script>

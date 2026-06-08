@@ -14,8 +14,8 @@ In your web app (pseudocode)
 
 ``` JavaScript
   input = receiveInput()  // handled by drop.that
-  output = process(input) // you only implement the logic
-  downloadOutput(output)  // handled by drop.that
+  output = process(input) // you implement the logic
+  deliverOutput(output)   // handled by drop.that
 ```
 
 Example: https://oyo.github.io/drop.that/
