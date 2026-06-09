@@ -199,6 +199,11 @@ export const dropIn = async (opts = {}) =>
             setInput(data)
           }
         })
+        .catch((e) => {
+          console.log(e)
+          createUI()
+          setInput(e)
+        })
 
     const createUI = () => {
       const overlay = document.createElement('div')

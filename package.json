@@ -1,6 +1,6 @@
 {
   "name": "drop.that",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Generic drop/paste input and download/copy output component for web applications.",
   "author": "Martin Rohrmeier <roryphant@gmail.com> (oyo)",
   "license": "MIT",
