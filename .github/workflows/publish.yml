@@ -26,41 +26,42 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-
-      - name: Checkout repository
+      - name: checkout repository
         uses: actions/checkout@v6
 
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: 24
-          registry-url: https://registry.npmjs.org
-          cache: yarn
-
-      - name: Get npm tag
+      - name: get npm tag
         id: npm_tag
         run: echo "current_version=$(npm pkg get version | tr -d '"')" >> $GITHUB_OUTPUT
 
-      - name: Check if git and npm tags match
+      - name: check if git and npm tags match
         if: ${{ github.ref_name != steps.npm_tag.outputs.current_version }}
         run: echo "GIT ${{ github.ref_name }} != NPM ${{ steps.npm_tag.outputs.current_version }}" && exit 1
 
-      - name: Build Library
-        run: yarn build
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: voidzero-dev/setup-vp@v1
         with:
-          path: 'src'
+          node-version: '24'
+          cache: true
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: install dependencies
+        run: vp install
+
+      - name: check, test & build
+        run: vp run ready
 
       - name: Publish library to NPM
         run: npm publish --provenance --access public
+        working-directory: ./packages/drop.that
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH }}
+
+      - name: setup pages
+        uses: actions/configure-pages@v5
+
+      - name: upload webapp
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './apps/website/dist'
+
+      - name: deploy to GitHub pages
+        id: deployment
+        uses: actions/deploy-pages@v4
