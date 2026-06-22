@@ -14,6 +14,9 @@ catalog:
   file-type: ^22.0.1
   pdf-parse: ^2.4.5
   vite-plugin-static-copy: ^4.1.1
+  jsdom: ^29.1.1
+  happy-dom: ^20.10.6
+  '@file-type/xml': ^1.1.1
 overrides:
   vite: 'catalog:'
   vitest: 'catalog:'

@@ -38,12 +38,14 @@
     "prepublishOnly": "vp run build"
   },
   "dependencies": {
+    "@file-type/xml": "^1.1.1",
     "file-type": "^22.0.1"
   },
   "devDependencies": {
     "@types/node": "^25.6.2",
     "@typescript/native-preview": "7.0.0-dev.20260509.2",
     "bumpp": "^11.1.0",
+    "happy-dom": "^20.10.6",
     "typescript": "^6.0.3",
     "vite-plus": "catalog:"
   }

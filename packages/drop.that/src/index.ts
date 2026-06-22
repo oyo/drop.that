@@ -1,13 +1,50 @@
 import { dropIn } from './dropIn.ts'
-import type { Converter, DropInOptions, DropInOutputs, Validator } from './types.ts'
-import { convert, valid } from './data.ts'
+import { dropOut } from './dropOut.ts'
+import type { DropInOptions, Validator } from './types.ts'
+import {
+  exp,
+  valid,
+  fromBuffer,
+  fromText,
+  fromJSON,
+  fromBlob,
+  fromURL,
+  fromElement,
+  fromSVG,
+  toBuffer,
+  toText,
+  toJSON,
+  toBlob,
+  toDataURI,
+  toObjectURL,
+  toImage,
+  toIframe,
+  toSVG,
+  DropItem,
+} from './data.ts'
 
 export {
+  DropItem,
   dropIn,
-  convert,
+  dropOut,
+  fromBuffer,
+  fromText,
+  fromJSON,
+  fromBlob,
+  fromURL,
+  fromElement,
+  fromSVG,
+  toBuffer,
+  toText,
+  toJSON,
+  toBlob,
+  toDataURI,
+  toObjectURL,
+  toImage,
+  toIframe,
+  toSVG,
+  exp,
   valid,
-  type Converter,
   type DropInOptions,
-  type DropInOutputs,
   type Validator,
 }

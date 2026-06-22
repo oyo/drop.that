@@ -24,7 +24,13 @@ const styleDefinitions = `.dropin,.dropout {
 button.dropclose {
   position: fixed;  
   z-index: 999;
-  left: 0;
+  color: #a0a0a0;
+  width: 6vh;
+  height: 6vh;
+  font-size: 3vh;
+  background: none;
+  border: none;
+  right: 0;
   top: 0;
 }
 
@@ -33,17 +39,18 @@ button.dropclose {
   background-color: #858140;
 }
 
-.fill {
+.dropin .fill,
+.dropout .fill {
   width: 100%;
   min-width: 260px;
 }
 
 .dropinput,
 .dropoutput {
-  width: 70%;
-  min-width: 360px;
-  top: 15%;
-  height: 70%;
+  height: 85%;
+  width: 85%;
+  min-width: 365px;
+  top: 7%;
 }
 
 .dropinput > span,
@@ -54,16 +61,22 @@ button.dropclose {
   justify-content: space-between;
 }
 
-#outputarea {
-	height: 90%;
-}
-
-.dropinput .inputarea,
-.dropinput .previewarea,
-.dropoutput #outputarea #rawarea,
-.dropoutput #outputarea #previewarea {
+.viewswitch {
   width: 100%;
   height: 90%;
+}
+
+.viewswitch .textarea,
+.viewswitch .previewarea {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+.viewswitch .textarea, 
+.viewswitch .textarea { 
+  background: #222;
+  color: #eee;
   padding: 10px;
   box-sizing: border-box;
   font-size: 16px;
@@ -72,26 +85,34 @@ button.dropclose {
   overflow-x: scroll;
 }
 
-.dropinput .inputarea {
-  background: #222;
-  color: #eee;
-}
-
-.dropinput .previewarea {
+.viewswitch .previewarea {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 	background: #808080;
 	color: black;
 }
 
-.dropinput .previewarea iframe {
+.previewarea img,
+.previewarea svg {
   width: 100%;
-  height: 100%;
+  height: 100%; 
+  object-fit: contain;
 }
 
-.hide {
-  display: none;
+.previewarea iframe {
+  width: 99.7%;
+  height: 99.2%;
 }
 
-.action {
+.inputactions button,
+.inputactions input {
+  height: 24px;
+  font-size: 16px;
+}
+
+.dropoutput .action,
+.dropinput .action {
   width: 160px;
   height: 40px;
   margin: 0 auto;

@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+  <head>
+    <title>404</title>
+  </head>
+  <body>
+    <script>
+      const base = '/drop.that/'
+      location.replace(
+        `${base}?page=${location.pathname
+          .split('/')
+          .slice(2)
+          .join('/')}${location.search.replace(/^\?/, '&')}${location.hash}`,
+      )
+    </script>
+  </body>
+</html>

@@ -17,4 +17,7 @@ export default defineConfig({
   run: {
     cache: true,
   },
+  test: {
+    environment: 'happy-dom',
+  },
 })
