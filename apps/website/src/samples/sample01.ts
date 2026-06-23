@@ -1,5 +1,3 @@
-import { dropIn } from 'drop.that'
+import { dropIn, dropOut } from 'drop.that'
 
-const sample01 = dropIn
-
-export { sample01 }
+export const sample01 = () => dropIn().then(dropOut)

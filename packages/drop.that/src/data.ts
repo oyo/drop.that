@@ -1,9 +1,8 @@
 import { FileTypeParser } from 'file-type'
-import type { DropOutInputs, Exporter, Importer, Validator } from './types.ts'
 import { detectXml } from '@file-type/xml'
+import Papa from 'papaparse'
+import type { DropOutInputs, Exporter, Importer, Validator } from './types.ts'
 import { N } from './ui.ts'
-
-const ftParser = new FileTypeParser({ customDetectors: [detectXml] })
 
 type FileType = {
   mime: string
@@ -14,7 +13,10 @@ const ftype: Record<string, FileType> = {
   bin: { mime: 'application/octet-stream', ext: 'bin' },
   text: { mime: 'text/plain', ext: 'txt' },
   json: { mime: 'application/json', ext: 'json' },
+  csv: { mime: 'text/csv', ext: 'csv' },
 }
+
+const ftParser = new FileTypeParser({ customDetectors: [detectXml] })
 
 const textDecoder = new TextDecoder()
 const textEncoder = new TextEncoder()
@@ -24,6 +26,7 @@ const getFileType = async (v: ArrayBuffer): Promise<FileType> => {
   if (type && type.mime) return type
   if (await valid.isBinary(v)) return ftype.bin
   if (await valid.isJSON(v)) return ftype.json
+  if (await valid.isCSV(v)) return ftype.csv
   return ftype.text
 }
 
@@ -41,12 +44,15 @@ const valid: Record<string, Validator> = {
       return false
     }
   },
-  isImage: async (v: ArrayBuffer) =>
-    (await ftParser.fromBuffer(v))?.mime.startsWith('image') ? true : false,
-  isPDF: async (v: ArrayBuffer) =>
-    (await ftParser.fromBuffer(v))?.mime === 'application/pdf' ? true : false,
-  isSVG: async (v: ArrayBuffer) =>
-    (await valid.isText(v)) && /^\s*<svg\s+/.test(textDecoder.decode(v)),
+  isCSV: (v: ArrayBuffer): Promise<boolean> =>
+    new Promise((resolve) => {
+      Papa.parse(textDecoder.decode(v), {
+        complete: (results) => resolve(results.errors.length === 0),
+      })
+    }),
+  isImage: async (v: ArrayBuffer) => (await getFileType(v)).mime.startsWith('image'),
+  isPDF: async (v: ArrayBuffer) => (await getFileType(v)).mime === 'application/pdf',
+  isSVG: async (v: ArrayBuffer) => (await getFileType(v)).mime === 'image/svg+xml',
 }
 
 const createDOMObject = async (tag: string, v: ArrayBuffer) =>
@@ -56,9 +62,9 @@ const exp: Record<string, Exporter> = {
   none: async (v: ArrayBuffer) => v,
   toText: async (v: ArrayBuffer) => textDecoder.decode(v),
   toJSON: async (v: ArrayBuffer) => JSON.parse(textDecoder.decode(v)),
-  toBlob: async (v: ArrayBuffer) => new Blob([v], { type: (await ftParser.fromBuffer(v))?.mime }),
+  toBlob: async (v: ArrayBuffer) => new Blob([v], { type: (await getFileType(v)).mime }),
   toDataURI: async (v: ArrayBuffer) =>
-    `data:${(await ftParser.fromBuffer(v))?.mime};base64,${btoa(String.fromCharCode(...new Uint8Array(v)))}`,
+    `data:${(await getFileType(v)).mime};base64,${btoa(String.fromCharCode(...new Uint8Array(v)))}`,
   toObjectURL: async (v: ArrayBuffer) => URL.createObjectURL((await exp.toBlob(v)) as Blob),
   toImage: async (v: ArrayBuffer) => (await createDOMObject('img', v)) as HTMLImageElement,
   toIframe: async (v: ArrayBuffer) => (await createDOMObject('iframe', v)) as HTMLIFrameElement,
@@ -111,6 +117,28 @@ class DropItem {
   }
   static async fromSVG(svg: SVGSVGElement) {
     return await new DropItem().setData(await imp.fromSVG(svg))
+  }
+
+  async isNotEmpty() {
+    return await valid.isNotEmpty(this.data)
+  }
+  async isBinary() {
+    return await valid.isBinary(this.data)
+  }
+  async isText() {
+    return await valid.isText(this.data)
+  }
+  async isJSON() {
+    return await valid.isJSON(this.data)
+  }
+  async isImage() {
+    return this.type.mime.startsWith('image/')
+  }
+  async isPDF() {
+    return this.type.mime === 'application/pdf'
+  }
+  async isSVG() {
+    return this.type.mime === 'image/svg+xml'
   }
 
   async buffer() {

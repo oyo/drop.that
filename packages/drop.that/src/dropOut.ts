@@ -21,7 +21,7 @@ const optionsSubmit: DropOutSubmitOptions = {
 const optionsDownload: DropOutDownloadOptions = {
   enable: true,
   auto: false,
-  fileName: 'drop.that.txt',
+  fileName: 'drop.that',
   mimeType: 'text/plain',
   buttonText: 'download',
 }
@@ -156,7 +156,7 @@ const dropOut = async (output: DropItem, options?: Partial<DropOutOptions>) => {
   }
 
   const handleSubmit = async () => {
-    console.log('submit...')
+    console.log(`submit to ${config.submit.method} ${config.submit.url}`)
     await fetch(config.submit.url, {
       method: config.submit.method,
       body: output.data,
@@ -167,15 +167,18 @@ const dropOut = async (output: DropItem, options?: Partial<DropOutOptions>) => {
   }
 
   const handleDownload = async () => {
-    console.log(`download ${config.download.fileName}`)
+    const fileName = config.download.fileName.endsWith(output.type.ext)
+      ? config.download.fileName
+      : `${config.download.fileName}.${output.type.ext}`
+    console.log(`download ${fileName}`)
     const link = document.createElement('a')
     const url = URL.createObjectURL(
-      new File([output.data], config.download.fileName, {
+      new File([output.data], fileName, {
         type: output.type.mime,
       }),
     )
     link.href = url
-    link.download = config.download.fileName
+    link.download = fileName
     config.parent.appendChild(link)
     link.click()
     config.parent.removeChild(link)
@@ -183,27 +186,31 @@ const dropOut = async (output: DropItem, options?: Partial<DropOutOptions>) => {
   }
 
   const handleClipboard = async () => {
-    console.log('clipboard...')
+    console.log(`try copy to ${output.type.mime} clipboard`)
     try {
       const item = new ClipboardItem({
         [output.type.mime]: await output.blob(),
       })
-      console.log(item)
       await navigator.clipboard.write([item])
     } catch (err) {
       console.log(err)
-      void setTextOutput(`error writing to clipboard:\n\n${JSON.stringify(err, null, 2)}`)
+      void setTextOutput(`Can't copy ${output.type.mime} to clipboard.
+Browser restricted mime type to:
+
+- text/plain
+- text/html
+- image/png`)
     }
   }
 
   const showOutput = async () => {
-    console.log(output.type.mime)
+    console.log(output.type)
     switch (output.type.mime) {
       case 'text/plain':
       case 'application/json':
         void setTextOutput(await output.text())
         break
-      case 'image/svg':
+      case 'image/svg+xml':
         await setPreview(await output.svg())
         break
       case 'image/jpeg':
