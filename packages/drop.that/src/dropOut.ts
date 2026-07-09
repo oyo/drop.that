@@ -35,6 +35,7 @@ const optionsClipboard: DropOutClipboardOptions = {
 
 const optionsOut: DropOutOptionsFull = {
   parent: document.body,
+  allowClose: true,
   submit: optionsSubmit,
   download: optionsDownload,
   clipboard: optionsClipboard,
@@ -49,6 +50,7 @@ const dropOut = async (output: DropItem, options?: Partial<DropOutOptions>) => {
 
   const config: DropOutOptionsFull = {
     parent: options?.parent ?? optionsOut.parent,
+    allowClose: true,
     submit: { ...optionsOut.submit, ...options?.submit },
     download: { ...optionsOut.download, ...options?.download },
     clipboard: { ...optionsOut.clipboard, ...options?.clipboard },
@@ -120,9 +122,13 @@ const dropOut = async (output: DropItem, options?: Partial<DropOutOptions>) => {
         'div',
         [
           style,
-          addEvents(N('button', '✕', { class: 'dropclose' }), {
-            click: close,
-          }),
+          ...(config.allowClose
+            ? [
+                addEvents(N('button', '✕', { class: 'dropclose' }), {
+                  click: close,
+                }),
+              ]
+            : []),
           await createTextInput(),
         ],
         { class: 'dropout' },
@@ -204,7 +210,6 @@ Browser restricted mime type to:
   }
 
   const showOutput = async () => {
-    console.log(output.type)
     switch (output.type.mime) {
       case 'text/plain':
       case 'application/json':

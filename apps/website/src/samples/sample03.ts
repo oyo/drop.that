@@ -1,19 +1,16 @@
-import { dropIn, DropItem, dropOut, toImage, valid, type DropInOptions } from 'drop.that'
-import { toGrayscale } from '../util/img'
+import { dropIn, dropOut, fromElement, toImage, valid } from 'drop.that'
+import { toGrayscale } from '../util/util.ts'
 
-const inOpts: Partial<DropInOptions> = {
+const inOptions = {
   url: 'https://raw.githubusercontent.com/oyo/tiny.image.magnifier/refs/heads/main/src/frog.jpg',
   valid: valid.isImage,
   startButtonText: 'grayscale',
 }
 
-const downloadResult = async (img: HTMLImageElement) =>
-  await dropOut(await DropItem.fromElement(img as HTMLImageElement), {
-    download: {
-      fileName: 'frog-gray.jpg',
-    },
-  })
+const process = () =>
+  dropIn(inOptions).then(toImage).then(toGrayscale).then(fromElement).then(dropOut)
 
-const sample03 = async () => dropIn(inOpts).then(toImage).then(toGrayscale).then(downloadResult)
-
-export { sample03 }
+export default {
+  label: 'Convert image to grayscale',
+  process,
+}

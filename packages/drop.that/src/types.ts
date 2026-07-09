@@ -18,6 +18,7 @@ interface DropInOptions {
   url: string
   autoStart: boolean
   showUI: boolean
+  allowClose: boolean
   valid: Validator
   placeholderText: string
   startButtonText: string
@@ -51,6 +52,7 @@ interface DropOutClipboardOptions {
 
 interface DropOutOptions {
   parent: HTMLElement
+  allowClose: boolean
   submit: Partial<DropOutSubmitOptions>
   download: Partial<DropOutDownloadOptions>
   clipboard: Partial<DropOutClipboardOptions>
@@ -58,6 +60,7 @@ interface DropOutOptions {
 
 interface DropOutOptionsFull {
   parent: HTMLElement
+  allowClose: boolean
   submit: DropOutSubmitOptions
   download: DropOutDownloadOptions
   clipboard: DropOutClipboardOptions

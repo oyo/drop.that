@@ -9,6 +9,7 @@
     "preview": "vp preview"
   },
   "dependencies": {
+    "Buffer": "catalog:",
     "drop.that": "link:../../packages/drop.that",
     "file-type": "^22.0.1",
     "pdf-parse": "^2.4.5"

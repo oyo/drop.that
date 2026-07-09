@@ -1,9 +1,17 @@
-import { dropIn, valid } from 'drop.that'
+import { dropIn, dropOut, fromSVG, toText, valid } from 'drop.that'
+import { wordCount, wordGraph } from '../util/util.ts'
 
-const sample02 = async () =>
-  await dropIn({
-    url: 'https://raw.githubusercontent.com/oyo/tiny.image.magnifier/refs/heads/main/src/frog.jpg',
-    valid: valid.isImage,
-  })
+const inOptions = {
+  url: 'https://oyo.github.io/drop.that/wordcount.txt',
+  valid: valid.isText,
+  startButtonText: 'count',
+}
 
-export { sample02 }
+const countGraph = (text: string) => wordGraph(wordCount(text))
+
+const process = () => dropIn(inOptions).then(toText).then(countGraph).then(fromSVG).then(dropOut)
+
+export default {
+  label: 'Count words in a text',
+  process,
+}

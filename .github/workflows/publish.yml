@@ -26,33 +26,33 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: get npm tag
+      - name: Get NPM tag
         id: npm_tag
-        run: echo "current_version=$(npm pkg get version | tr -d '"')" >> $GITHUB_OUTPUT
+        run: echo "current_version=$(cat packages/trackutil/package.json | grep "version" | head -1 | cut -d '"' -f4)" >> $GITHUB_OUTPUT
 
-      - name: check if git and npm tags match
+      - name: Check if tags match
         if: ${{ github.ref_name != steps.npm_tag.outputs.current_version }}
         run: echo "GIT ${{ github.ref_name }} != NPM ${{ steps.npm_tag.outputs.current_version }}" && exit 1
 
       - uses: voidzero-dev/setup-vp@v1
         with:
-          node-version: '24'
           cache: true
+          run-install: true
 
-      - name: install dependencies
-        run: vp install
-
-      - name: check, test & build
-        run: vp run ready
+      - name: Build library
+        working-directory: ./packages/drop.that
+        run: vp pack
 
       - name: Publish library to NPM
+        working-directory: ./packages/trackutil
         run: npm publish --provenance --access public
-        working-directory: ./packages/drop.that
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH }}
+
+      - name: Build webapp
+        working-directory: ./apps/website
+        run: vp build
 
       - name: setup pages
         uses: actions/configure-pages@v5

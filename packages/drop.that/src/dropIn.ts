@@ -9,6 +9,7 @@ const optionsIn: DropInOptions = {
   url: '',
   autoStart: false,
   showUI: true,
+  allowClose: true,
   valid: valid.isNotEmpty,
   placeholderText: 'paste input or drop input file',
   startButtonText: 'start',
@@ -98,9 +99,13 @@ const dropIn = async (options?: Partial<DropInOptions>): Promise<DropItem> =>
             'div',
             [
               style,
-              addEvents(N('button', '✕', { class: 'dropclose' }), {
-                click: close,
-              }),
+              ...(config.allowClose
+                ? [
+                    addEvents(N('button', '✕', { class: 'dropclose' }), {
+                      click: close,
+                    }),
+                  ]
+                : []),
               await createTextInput(),
             ],
             { class: 'dropin' },
