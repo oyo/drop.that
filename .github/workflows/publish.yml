@@ -31,7 +31,7 @@ jobs:
 
       - name: Get NPM tag
         id: npm_tag
-        run: echo "current_version=$(cat packages/trackutil/package.json | grep "version" | head -1 | cut -d '"' -f4)" >> $GITHUB_OUTPUT
+        run: echo "current_version=$(cat packages/drop.that/package.json | grep "version" | head -1 | cut -d '"' -f4)" >> $GITHUB_OUTPUT
 
       - name: Check if tags match
         if: ${{ github.ref_name != steps.npm_tag.outputs.current_version }}
