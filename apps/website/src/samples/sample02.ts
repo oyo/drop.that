@@ -2,7 +2,7 @@ import { dropIn, dropOut, fromSVG, toText, valid } from 'drop.that'
 import { wordCount, wordGraph } from '../util/util.ts'
 
 const inOptions = {
-  url: 'https://oyo.github.io/drop.that/wordcount.txt',
+  url: 'https://oyo.github.io/drop.that/data/wordcount.txt',
   valid: valid.isText,
   startButtonText: 'count',
 }
